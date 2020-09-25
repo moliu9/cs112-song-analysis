@@ -16,11 +16,18 @@ class Song:
 """
 Place your answers to the Design check questions here:
 
-1.
+1. tf-idf is the product of the term frequency (tf) and document frequency (idf). 
+tf-idf is a metric of a term's importance in a document with regards to a set of training data (a corpus), 
+and in the context of this project, it represents the the importance of a word in a certain
+song, related to the overall sample collection of songs. tf is calculated by counting the number of times
+a word appears in a song, and idf measures the prevalence of a certain word in a set of lyrics by finding
+the logarithm of the number of total songs divided by the number of songs containing that word. 
 
-
-2.
-
+2. We believe that our tests need to be able to show: 1) our individual helper functions are correctly returning
+the values of our requests and 2) our overall program returns accurate classification of genres. In terms of 1), 
+we can feed the functions data and compared with visual inspection and manual calculation. For 2), we can father
+actual classified songs from the Internet and compare the results between the published classification data
+and the data our program generates (i.e. trying the real data set given in the assignment).
 
 """
 
@@ -69,6 +76,18 @@ def compute_idf(corpus: list) -> dict:
     description: this function is responsible for calculating inverse document
       frequencies of every word in the corpus
     """
+
+    """
+    word_set =  set of all words in corpus 
+    idf_dict = {}
+    for word in word_set: 
+        word_idf_count = 0
+        for each song in the corpus:
+            if the word is in the list of lyrics in the song:
+                word_idf_count += 1
+        idf_dict[word] = math.log(length of the corpus/word_idf_count)s
+    return idf_dict = {word: value of idf}
+    """
     pass
 
 
@@ -76,6 +95,15 @@ def compute_tf(song_lyrics: list) -> dict:
     """input: list representing the song lyrics
     output: dictionary containing the term frequency for that set of lyrics
     description: this function calculates the term frequency for a set of lyrics
+    """
+
+    """
+    tf_dict = {}
+    for element in song_lyrics:
+        create an if statement that:
+            add word it doesn't already exist;
+            word frequency +1 if already exists.
+    return a dictionary that looks like {word: number of appearances, ...}
     """
     pass
 
