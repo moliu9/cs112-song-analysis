@@ -3,7 +3,6 @@ import csv
 import math
 import re
 
-mo liu
 @dataclass
 class Song:
     id: int
