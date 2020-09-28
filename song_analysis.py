@@ -12,10 +12,7 @@ class Song:
     genre: str
     lyrics: list
 
-
-
 """
-
 Place your answers to the Design check questions here:
 
 1. tf-idf is the product of the term frequency (tf) and document frequency (idf). 
@@ -85,7 +82,7 @@ def compute_idf(corpus: list) -> dict:
      word_idf_count = 0
      word_set.update(l.lyrics)
      for word in word_set:
-       if word in l.lyrics:
+       if word in l.lyrics
           word_idf_count = word_idf_count + 1
           idf_dict[word] = math.log(len(corpus)/word_idf_count)
     return idf_dict
