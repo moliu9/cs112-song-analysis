@@ -20,13 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3a9aa94a-ec36-4058-b9d3-1e9e10e0be18" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/example.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/full_songdata.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/small_songdata.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/cs112-song-analysis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cs112-song-analysis.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/song_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/song_analysis.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
