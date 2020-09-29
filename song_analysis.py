@@ -85,7 +85,7 @@ def compute_idf(corpus: list) -> dict:
         for l in corpus:
             if word in l.lyrics:
                 word_idf_count += 1
-        idf_dict[word] = math.log(len(corpus) / word_idf_count)
+        idf_dict[word] = math.log((len(corpus)-1) / word_idf_count)
     return idf_dict
 
      #word_set =  set of all words in corpus
