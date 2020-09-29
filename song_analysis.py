@@ -79,16 +79,14 @@ def compute_idf(corpus: list) -> dict:
     word_set = set()
     idf_dict = {}
     for l in corpus:
-     word_idf_count = 0
-     word_set.update(l.lyrics)
-     for word in word_set:
-       if word in l.lyrics
-          word_idf_count = word_idf_count + 1
-          idf_dict[word] = math.log(len(corpus)/word_idf_count)
+        word_set.update(l.lyrics)
+    for word in word_set:
+        word_idf_count = 0
+        for l in corpus:
+            if word in l.lyrics:
+                word_idf_count += 1
+        idf_dict[word] = math.log(len(corpus) / word_idf_count)
     return idf_dict
-
-
-
 
      #word_set =  set of all words in corpus
     #idf_dict = {}
@@ -102,17 +100,16 @@ def compute_idf(corpus: list) -> dict:
 
 
 def compute_tf(song_lyrics: list) -> dict:
-    #input: list representing the song lyrics
-    #output: dictionary containing the term frequency for that set of lyrics
-    #description: this function calculates the term frequency for a set of lyrics"""
-
-   tf_dict = {}
-   for ele in song_lyrics:
-     if ele in tf_dict.keys():
-        tf_dict[ele] = tf_dict[ele] + 1
-     else:
-        tf_dict[ele] = 1
-   return  tf_dict
+    """input: list representing the song lyrics
+    output: dictionary containing the term frequency for that set of lyrics
+    description: this function calculates the term frequency for a set of lyrics"""
+    tf_dict = {}
+    for ele in song_lyrics:
+        if ele in tf_dict.keys():
+            tf_dict[ele] = tf_dict[ele] + 1
+        else:
+            tf_dict[ele] = 1
+    return tf_dict
 
     #tf_dict = {}
     #for element in song_lyrics:
@@ -120,8 +117,6 @@ def compute_tf(song_lyrics: list) -> dict:
     #        add word it doesn't already exist;
     #        word frequency +1 if already exists.
     #return a dictionary that looks like {word: number of appearances, ...}
-
-
 
 
 def compute_tf_idf(song_lyrics: list, corpus_idf: dict) -> dict:
