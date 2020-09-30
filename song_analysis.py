@@ -110,7 +110,7 @@ def compute_tf_idf(song_lyrics: list, corpus_idf: dict) -> dict:
     tf = compute_tf(song_lyrics)
     tf_idf_dict = {}
     for word in song_lyrics:
-    tf_idf_dict[word] = tf[word] * corpus_idf[word]
+        tf_idf_dict[word] = tf[word] * corpus_idf[word]
     return tf_idf_dict
 
 
@@ -119,7 +119,10 @@ def compute_corpus_tf_idf(corpus: list, corpus_idf: dict) -> dict:
     output: a dictionary from song ids to tf-idf dictionaries
     description: calculates tf-idf weights for an entire corpus
     """
-    pass
+    corpus_tf_idf = {}
+    for song in the entire corpus:
+        corpus[name of the song] == compute_tf_idf()
+    return corpus_tf_idf
 
 
 def cosine_similarity(l1: dict, l2: dict) -> float:
