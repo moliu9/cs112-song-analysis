@@ -13,6 +13,7 @@ class Song:
     lyrics: list
 
 """
+
 Place your answers to the Design check questions here:
 
 1. tf-idf is the product of the term frequency (tf) and document frequency (idf). 
@@ -147,15 +148,15 @@ def nearest_neighbor(
     new_lyrics = clean_lyrics(song_lyrics)
     score_table = {}
     for ele in corpus:
-        score_table[ele.id] = cosine_similarity(compute_tf_idf(new_lyrics,corpus_idf), corpus_tf_idf[ele])
-    max_similarity = max(score_table.values())  # maximum value
-    max_id = [key for key, value in score_table.items() if value == max_similarity]
-    if ele.id == max_id:
-        return ele
+        score_table[ele.id] = cosine_similarity(compute_tf_idf(new_lyrics, corpus_idf), corpus_tf_idf[ele.id])
+    max_id = max(score_table, key=lambda x: score_table[x])
+    for ele in corpus:
+        if ele.id == max_id:
+            return ele
 
 
 def main(filename: str, lyrics: str):
     corpus = create_corpus(filename)
     corpus_idf = compute_idf(corpus)
     corpus_tf_idf = compute_corpus_tf_idf(corpus, corpus_idf)
-    print(nearest_neighbor(lyrics, corpus, corpus_tf_idf, corpus_idf).genre)
+    print(nearest_neighbor(lyrics, corpus, corpus_tf_idf, corpus_idf).title)
