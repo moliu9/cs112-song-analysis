@@ -100,6 +100,8 @@ def testing_nearest_neightbor():
    corpus_idf = compute_idf(create_corpus("example.csv"))
    corpus_tf_idf = compute_corpus_tf_idf(corpus, corpus_idf)
    assert nearest_neighbor("Todavia yo te quiero, pero se que es un error bebe. Tu ya no eres el amor mio",corpus,corpus_tf_idf, corpus_idf) == Song(id=7, title='Mia', year='2009', artist='Bad Bunny', genre='Pop-Latino',lyrics= ['bebe', 'tu', 'eres', 'mia', 'yo', 'te', 'amo', 'mi', 'amor','i','love', 'you'])
+   assert nearest_neighbor("",corpus,corpus_tf_idf, corpus_idf) == Song(id=0, title='song', year='year', artist='artist', genre='genre', lyrics=['lyrics'])
+
 
 
 
