@@ -95,10 +95,11 @@ def compute_tf(song_lyrics: list) -> dict:
     description: this function calculates the term frequency for a set of lyrics"""
     tf_dict = {}
     for ele in song_lyrics:
-        if ele in tf_dict.keys():
-            tf_dict[ele] = tf_dict[ele] + 1
+        fix_word = clean_word(ele)
+        if fix_word in tf_dict.keys():
+            tf_dict[fix_word] = tf_dict[fix_word] + 1
         else:
-            tf_dict[ele] = 1
+            tf_dict[fix_word] = 1
     return tf_dict
 
 
@@ -110,7 +111,11 @@ def compute_tf_idf(song_lyrics: list, corpus_idf: dict) -> dict:
     tf = compute_tf(song_lyrics)
     tf_idf_dict = {}
     for word in song_lyrics:
-        tf_idf_dict[word] = tf[word] * corpus_idf[word]
+        new_word = clean_word(word)
+        if new_word in corpus_idf.keys():
+           tf_idf_dict[new_word] = tf[new_word] * corpus_idf[new_word]
+        else:
+            tf_idf_dict[new_word] = tf[new_word]
     return tf_idf_dict
 
 
