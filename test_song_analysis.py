@@ -26,22 +26,22 @@ def testing_compute_idf():
     # three entries with same words appearing in multiple songs
 
 def testing_compute_tf():
-    #Normal Scenario
+    # Normal Scenario
     assert compute_tf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy"]) == {"is": 2, "this":2, "the":1, "real":1, "life":1, "or":1, "just":1, "fantasy":1}
 
-    #Empty list
+    # Empty list
     assert compute_tf([]) == {}
 
-    #Making sure invalid characthers are counted correctly
+    # Making sure invalid characthers are counted correctly
     assert compute_tf(["MakinG", "SurE", "Edge", "Cases!@#", "WOrk%", "Work?"]) == {"making":1,"sure":1, "edge":1, "cases":1, "work":2}
 
 def testing_compute_tf_idf():
-    corpus_idf = compute_idf(create_corpus("old_example.csv"))
+    corpus_idf = compute_idf(create_corpus("example.csv"))
     # Normal scenario
     assert compute_tf_idf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy"], corpus_idf) == {'is': 3.8918202981106265, 'this': 3.8918202981106265, 'the': 1.252762968495368, 'real': 1.9459101490553132, 'life': 1.9459101490553132, 'or': 1.9459101490553132, 'just': 1.252762968495368, 'fantasy': 1.9459101490553132}
 
     #Test to see if a word in the lyric is not in the corpus (lol)
-    assert compute_tf_idf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy", "lol"], compute_idf(create_corpus("old_example.csv"))) == {'is': 3.8918202981106265, 'this': 3.8918202981106265, 'the': 1.252762968495368, 'real': 1.9459101490553132, 'life': 1.9459101490553132, 'or': 1.9459101490553132, 'just': 1.252762968495368, 'fantasy': 1.9459101490553132, 'lol': 1}
+    assert compute_tf_idf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy", "lol"], compute_idf(create_corpus("example.csv"))) == {'is': 3.8918202981106265, 'this': 3.8918202981106265, 'the': 1.252762968495368, 'real': 1.9459101490553132, 'life': 1.9459101490553132, 'or': 1.9459101490553132, 'just': 1.252762968495368, 'fantasy': 1.9459101490553132, 'lol': 1}
 
     # the empty list
     assert compute_tf([]) == {}
@@ -57,9 +57,6 @@ def testing_compute_tf_idf():
     lyrics = clean_lyrics('h8ppy birthd3y to y0u')
     assert compute_tf(lyrics) == {'h8ppy': 1, 'birthd3y': 1, 'to': 1, 'y0u': 1}
 
-    # non-empty, with bad characters
-    lyrics = clean_lyrics('t[]his w^\old i,s on\ fir[e')
-    assert compute_tf(lyrics) == {'this': 1, 'wold': 1, 'is': 1, 'on': 1, 'fire': 1}
 
 
 def testing_compute_tf_idf():
@@ -82,6 +79,7 @@ def testing_compute_tf_idf():
 def testing_corpus_tf_idf():
     corpus_idf = compute_idf(create_corpus("long_example.csv"))
     corpus = create_corpus("long_example.csv")
+    # Testing if the definition produces the correct Tf-Idf values for the corpus
     assert compute_corpus_tf_idf(corpus, corpus_idf) == {0: {'lyrics': 1.0986122886681098},
     1: {'is': 2.1972245773362196,'this': 2.1972245773362196, 'the': 1.0986122886681098, 'real': 1.0986122886681098,
     'life': 1.0986122886681098, 'or': 1.0986122886681098, 'just': 0.4054651081081644, 'fantasy': 1.0986122886681098},
@@ -91,21 +89,17 @@ def testing_corpus_tf_idf():
     'me': 1.0986122886681098, 'ptsd': 1.0986122886681098}, 3: {'i': 0.8109302162163288, 'was': 1.0986122886681098,
     'in': 0.4054651081081644, 'love': 1.0986122886681098, 'with': 1.0986122886681098, 'pete': 1.0986122886681098,
     'now': 1.0986122886681098, 'just': 0.4054651081081644, 'sing': 1.0986122886681098, 'songs': 1.0986122886681098}}
+    # Testing an empty corpus
     assert compute_corpus_tf_idf([], corpus_idf) == {}
 
 
 
 
 def testing_nearest_neightbor():
-   corpus = create_corpus("old_example.csv")
-   corpus_idf = compute_idf(create_corpus("old_example.csv"))
+   corpus = create_corpus("example.csv")
+   corpus_idf = compute_idf(create_corpus("example.csv"))
    corpus_tf_idf = compute_corpus_tf_idf(corpus, corpus_idf)
-   assert nearest_neighbor("Todavia yo te quiero, pero se que es un error bebe."
-                           " Tu ya no eres el amor mio",
-   corpus,corpus_tf_idf, corpus_idf) == Song(id=7, title='Mia', year='2009',
-     artist='Bad Bunny', genre='Pop-Latino',lyrics=
-    ['bebe', 'tu', 'eres', 'mia', 'yo', 'te', 'amo', 'mi', 'amor','i',
-     'love', 'you'])
+   assert nearest_neighbor("Todavia yo te quiero, pero se que es un error bebe. Tu ya no eres el amor mio",corpus,corpus_tf_idf, corpus_idf) == Song(id=7, title='Mia', year='2009', artist='Bad Bunny', genre='Pop-Latino',lyrics= ['bebe', 'tu', 'eres', 'mia', 'yo', 'te', 'amo', 'mi', 'amor','i','love', 'you'])
 
 
 
