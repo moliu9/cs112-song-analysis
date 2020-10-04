@@ -26,15 +26,56 @@ def testing_compute_idf():
     # three entries with same words appearing in multiple songs
 
 def testing_compute_tf():
+    #Normal Scenario
     assert compute_tf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy"]) == {"is": 2, "this":2, "the":1, "real":1, "life":1, "or":1, "just":1, "fantasy":1}
+
+    #Empty list
     assert compute_tf([]) == {}
+
+    #Making sure invalid characthers are counted correctly
     assert compute_tf(["MakinG", "SurE", "Edge", "Cases!@#", "WOrk%", "Work?"]) == {"making":1,"sure":1, "edge":1, "cases":1, "work":2}
 
 def testing_compute_tf_idf():
     corpus_idf = compute_idf(create_corpus("old_example.csv"))
+    # Normal scenario
     assert compute_tf_idf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy"], corpus_idf) == {'is': 3.8918202981106265, 'this': 3.8918202981106265, 'the': 1.252762968495368, 'real': 1.9459101490553132, 'life': 1.9459101490553132, 'or': 1.9459101490553132, 'just': 1.252762968495368, 'fantasy': 1.9459101490553132}
-    assert compute_tf_idf([], corpus_idf) == {}
+
+    #Test to see if a word in the lyric is not in the corpus (lol)
     assert compute_tf_idf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy", "lol"], compute_idf(create_corpus("old_example.csv"))) == {'is': 3.8918202981106265, 'this': 3.8918202981106265, 'the': 1.252762968495368, 'real': 1.9459101490553132, 'life': 1.9459101490553132, 'or': 1.9459101490553132, 'just': 1.252762968495368, 'fantasy': 1.9459101490553132, 'lol': 1}
+
+    # the empty list
+    assert compute_tf([]) == {}
+
+    # the empty string
+    assert compute_tf(['']) == {'': 1}
+
+    # non-empty entries
+    lyrics = clean_lyrics('happy birthday to you')
+    assert compute_tf(lyrics) == {'happy': 1, 'birthday': 1, 'to': 1, 'you': 1}
+
+    # non-empty, with numbers
+    lyrics = clean_lyrics('h8ppy birthd3y to y0u')
+    assert compute_tf(lyrics) == {'h8ppy': 1, 'birthd3y': 1, 'to': 1, 'y0u': 1}
+
+    # non-empty, with bad characters
+    lyrics = clean_lyrics('t[]his w^\old i,s on\ fir[e')
+    assert compute_tf(lyrics) == {'this': 1, 'wold': 1, 'is': 1, 'on': 1, 'fire': 1}
+
+
+def testing_compute_tf_idf():
+
+    # empty word list and empty corpus
+    assert compute_tf_idf([], {}) == {}
+
+    # only unique words in lyrics
+    idf = compute_idf(create_corpus('example.csv'))
+    lyrics = clean_lyrics('close to love')
+    assert compute_tf_idf(lyrics, idf) == {'close': math.log(7), 'to': math.log(7/3), 'love': math.log(7/2)}
+
+    # repeating words in lyrics
+    lyrics = clean_lyrics('this is now this is love love love')
+    assert compute_tf_idf(lyrics, idf) == {'this': 2*math.log(7), 'is': 2*math.log(7),
+                                           'now': math.log(7/2), 'love': 3*math.log(7/2)}
 
 
 
@@ -54,6 +95,7 @@ def testing_corpus_tf_idf():
 
 
 
+
 def testing_nearest_neightbor():
    corpus = create_corpus("old_example.csv")
    corpus_idf = compute_idf(create_corpus("old_example.csv"))
@@ -64,5 +106,7 @@ def testing_nearest_neightbor():
      artist='Bad Bunny', genre='Pop-Latino',lyrics=
     ['bebe', 'tu', 'eres', 'mia', 'yo', 'te', 'amo', 'mi', 'amor','i',
      'love', 'you'])
+
+
 
 
