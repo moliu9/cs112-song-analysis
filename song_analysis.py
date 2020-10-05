@@ -76,29 +76,47 @@ def compute_idf(corpus: list) -> dict:
     description: this function is responsible for calculating inverse document
       frequencies of every word in the corpus
     """
-    # Create an empty word set and dictionary
-    word_set = set()
+    # a dictionary that keeps track of individual words and id of songs that contain those words
+    word_set = {}
+    # a dictionary that contains words and their corresponding idf scores
     idf_dict = {}
-    # Go through the corpus and add every lyric of each song to the set
-    for l in corpus:
-        word_set.update(l.lyrics)
-        # Go through the set, make the initial idf value 0
+    for element in corpus:
+        for word in element.lyrics:
+            # if the word appears for the first time, create a set
+            if word not in word_set:
+                word_set[word] = set()
+            # if the id has not already been added, add to the set
+            if element.id not in word_set:
+                word_set[word].add(element.id)
+    # count the number of songs that have that certain word, and calculate the idf score
     for word in word_set:
-        word_idf_count = 0
-        # go through the corpus once more, for every word in the set, check if the word exist in the lyrics of each song
-        #if it does, increase its idf count
-        #ince the program is doner going thru the corpus, calculate the idf values and input the in the dictionary
-        for l in corpus:
-            if word in l.lyrics:
-                word_idf_count += 1
-        idf_dict[word] = math.log((len(corpus) - 1) / word_idf_count)
+        idf_dict[word] = math.log((len(corpus) - 1) / len(word_set[word]))
     return idf_dict
+
+    # # Create an empty word set and dictionary
+    # word_set = set()
+    # idf_dict = {}
+    # # Go through the corpus and add every lyric of each song to the set
+    # for l in corpus:
+    #     word_set.update(l.lyrics)
+    #     # Go through the set, make the initial idf value 0
+    # for word in word_set:
+    #     word_idf_count = 0
+    #     # go through the corpus once more, for every word in the set, check if the word exist in the lyrics of each song
+    #     # if it does, increase its idf count
+    #     # once the program is done going through the corpus, calculate the idf values and input the in the dictionary
+    #     for l in corpus:
+    #         if word in l.lyrics:
+    #             word_idf_count += 1
+    #     idf_dict[word] = math.log((len(corpus) - 1) / word_idf_count)
+    # return idf_dict
 
 
 def compute_tf(song_lyrics: list) -> dict:
     """input: list representing the song lyrics
     output: dictionary containing the term frequency for that set of lyrics
     description: this function calculates the term frequency for a set of lyrics"""
+
     # create an empty dictionary
     tf_dict = {}
     # Go through every word in the song lyrics list
@@ -120,17 +138,18 @@ def compute_tf_idf(song_lyrics: list, corpus_idf: dict) -> dict:
     output: a dictionary with tf-idf weights for the song (words to weights)
     description: this function calculates the tf-idf weights for a song
     """
-    # Utilize the tf fucntion to find the term frequency of the words in song_lyrics
+
+    # Utilize the tf function to find the term frequency of the words in song_lyrics
     tf = compute_tf(song_lyrics)
     # create and empty dict
     tf_idf_dict = {}
     # go through each word in the lyrics
     for word in song_lyrics:
-        # make sure the word does not have invalid charachters
+        # make sure the word does not have invalid characters
         new_word = clean_word(word)
-        # if the word exist in idf-dict, calcualte the tf-idf value of the word
+        # if the word exist in idf-dict, calculate the tf-idf value of the word
         if new_word in corpus_idf.keys():
-           tf_idf_dict[new_word] = tf[new_word] * corpus_idf[new_word]
+            tf_idf_dict[new_word] = tf[new_word] * corpus_idf[new_word]
         else:
             # if the word does not exist in corpus idf, just return the TF count
             tf_idf_dict[new_word] = tf[new_word]
@@ -142,6 +161,7 @@ def compute_corpus_tf_idf(corpus: list, corpus_idf: dict) -> dict:
     output: a dictionary from song ids to tf-idf dictionaries
     description: calculates tf-idf weights for an entire corpus
     """
+
     # create and empty dict
     tf_idf_weights = {}
     for ele in corpus:
@@ -157,6 +177,7 @@ def cosine_similarity(l1: dict, l2: dict) -> float:
     output: float representing the similarity between the values of the two dictionaries
     description: this function finds the similarity score between two dictionaries
     """
+
     magnitude1 = math.sqrt(sum(w * w for w in l1.values()))
     magnitude2 = math.sqrt(sum(w * w for w in l2.values()))
     dot = sum(l1[w] * l2.get(w, 0) for w in l1)
@@ -171,23 +192,27 @@ def nearest_neighbor(
     output: a song object
     description: this function produces the song in the corpus that is most similar to the lyrics it is given
     """
-    #make sure the lyrics of the song do not have invalid characters
+
+    # make sure the lyrics of the song do not have invalid characters
     new_lyrics = clean_lyrics(song_lyrics)
-    #make an empty dict
+    # make an empty dict
     score_table = {}
     for ele in corpus:
-    # go trough eacfh element in corpus, calculate the cosine similarity of each song to the new song given
-    # Add the cosine similarity value to the dict, the key being the id of the song that was used to comapre
+        # go trough each element in corpus, calculate the cosine similarity of each song to the new song given
+        # add the cosine similarity value to the dict, the key being the id of the song that was used to compare
         score_table[ele.id] = cosine_similarity(compute_tf_idf(new_lyrics, corpus_idf), corpus_tf_idf[ele.id])
-    #Find the max value in the dictionary, and return the key
+    # find the max value in the dictionary, and return the key
     max_id = max(score_table, key=lambda x: score_table[x])
-    for ele in corpus:
-        if ele.id == max_id:
-            return ele
+    if max_id == 0:
+        return None
+    else:
+        for ele in corpus:
+            if ele.id == max_id:
+                return ele
 
 
 def main(filename: str, lyrics: str):
     corpus = create_corpus(filename)
     corpus_idf = compute_idf(corpus)
     corpus_tf_idf = compute_corpus_tf_idf(corpus, corpus_idf)
-    print(nearest_neighbor(lyrics, corpus, corpus_tf_idf, corpus_idf).title)
+    print(nearest_neighbor(lyrics, corpus, corpus_tf_idf, corpus_idf).genre)
