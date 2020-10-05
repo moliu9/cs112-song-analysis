@@ -93,24 +93,6 @@ def compute_idf(corpus: list) -> dict:
         idf_dict[word] = math.log((len(corpus) - 1) / len(word_set[word]))
     return idf_dict
 
-    # # Create an empty word set and dictionary
-    # word_set = set()
-    # idf_dict = {}
-    # # Go through the corpus and add every lyric of each song to the set
-    # for l in corpus:
-    #     word_set.update(l.lyrics)
-    #     # Go through the set, make the initial idf value 0
-    # for word in word_set:
-    #     word_idf_count = 0
-    #     # go through the corpus once more, for every word in the set, check if the word exist in the lyrics of each song
-    #     # if it does, increase its idf count
-    #     # once the program is done going through the corpus, calculate the idf values and input the in the dictionary
-    #     for l in corpus:
-    #         if word in l.lyrics:
-    #             word_idf_count += 1
-    #     idf_dict[word] = math.log((len(corpus) - 1) / word_idf_count)
-    # return idf_dict
-
 
 def compute_tf(song_lyrics: list) -> dict:
     """input: list representing the song lyrics
