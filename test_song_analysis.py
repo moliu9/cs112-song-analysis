@@ -11,9 +11,9 @@ def testing_compute_idf():
 
     # two entries with no overlapping words: all idf values should be equal
     short_unique = create_corpus('short_unique.csv')
-    assert compute_idf(short_unique) == {'love': math.log(2/1), 'lyrics':
-     math.log(2/1), 'baby': math.log(2/1), 'i': math.log(2/1),
-     'birthday': math.log(2/1), 'you': math.log(2/1), 'happy': math.log(2/1)}
+    assert compute_idf(short_unique) == {'love': math.log(2/1), 'lyrics': math.log(2/1), 'baby': math.log(2/1),
+                                         'i': math.log(2/1),'birthday': math.log(2/1), 'you': math.log(2/1),
+                                         'happy': math.log(2/1)}
 
     # two entries with overlapping words: overlapped should have idf value of zero
     short_overlap = create_corpus('short_overlap.csv')
@@ -47,10 +47,11 @@ def testing_compute_tf_idf():
 
     # Normal scenario
     corpus_idf = compute_idf(create_corpus("old_example.csv"))
-    assert compute_tf_idf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy"], corpus_idf) == \
-           {'is': (math.log(7/1) * 2), 'this': (math.log(7/1) * 2), 'the': (math.log(7/2) * 1),
-            'real': (math.log(7/1) * 1), 'life': (math.log(7/1) * 1), 'or': (math.log(7/1) * 1),
-            'just': (math.log(7/2) * 1), 'fantasy': (math.log(7/1) * 1)}
+    assert compute_tf_idf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy"],
+                          corpus_idf) == {'is': (math.log(7/1) * 2), 'this': (math.log(7/1) * 2),
+                                          'the': (math.log(7/2) * 1), 'real': (math.log(7/1) * 1),
+                                          'life': (math.log(7/1) * 1), 'or': (math.log(7/1) * 1),
+                                          'just': (math.log(7/2) * 1), 'fantasy': (math.log(7/1) * 1)}
 
     # Test to see if a word in the lyric is not in the corpus
     assert compute_tf_idf(["Is", "this", "the", "real", "life?", "Or", "is", "this", "just", "fantasy", "lol"],
